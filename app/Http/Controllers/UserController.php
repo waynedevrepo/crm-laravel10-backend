@@ -40,7 +40,20 @@ class UserController extends Controller
             "role" => 'Team Leader'
         ])->get();
 
-        Log::info($leaders);
+        return response()->json([
+            "status" => "success",
+            "leaders" => $leaders
+        ]);
+    }
+
+    public function getAgents(Request $request)
+    {
+        $user = $request->user();
+
+        $leaders = User::where([
+            "role" => 'Agent',
+            "team_leader" => $user->id 
+        ])->get();
 
         return response()->json([
             "status" => "success",
